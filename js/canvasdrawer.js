@@ -22,7 +22,6 @@ define(['settings', 'order'], function(settings, order) {
 			canvasElem.height = settings.height;
 			
 			var margin = settings.margin;
-			console.log(margin);
 			var drawWidth = settings.width - margin.left - margin.right;
 			var drawHeight = settings.height - margin.top - margin.bottom;
 			var aspectRatio = drawHeight / drawWidth;
@@ -44,10 +43,9 @@ define(['settings', 'order'], function(settings, order) {
 			for (i = 0; i < order.data.length; i++) {
 				c = order.data[i];
 				ctx.fillStyle = getColor(characters[c]);
-				y = margin.top + Math.floor(i / w) * size;
+				y = margin.top + size + Math.floor(i / w) * size;
 				x = margin.left + (i % w) * size;
-				ctx.fillRect(x, y, size, size)
-				//ctx.fillText(c, x, y);
+				ctx.fillText(c, x, y);
 			}
 
 			var dataURL = canvasElem.toDataURL('image/png');
