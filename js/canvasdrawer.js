@@ -31,9 +31,7 @@ define(['settings', 'order'], function(settings, order) {
 			var size = (aspectRatio > 1) ? (drawWidth / w) : (drawHeight / h);
 
 			var ctx = canvasElem.getContext('2d');
-			console.log(w, h);
-			console.log(size);
-
+			
 			ctx.fillStyle = settings.colors.background;
 			ctx.fillRect(0, 0, settings.width, settings.height);
 			
