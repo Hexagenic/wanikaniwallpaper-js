@@ -1,0 +1,87 @@
+body {
+	font-family: arial;
+	background-color:black;
+	background-repeat: no-repeat;
+}
+
+#content {
+	width: 800px;
+	margin: auto;
+	background-color: rgba(255, 255, 255, 0.85);
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-top: 1px;
+	padding-bottom: 50px;
+	margin-top: 100px;
+	border-radius: 20px;
+	color: black;
+}
+
+h1 {
+	font-size: 50px;
+}
+#message {
+	text-align: center;
+	width: 100%;
+}
+
+.clearfix:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+#left-column {
+	float: left;
+	width: 400px;
+}
+
+#right-column {
+	float: left;
+	width: 400px;
+}
+
+#download_link {
+	width: 100px;
+	border: white outset 3px;
+	display: block;
+	text-decoration: none;
+	color: black;
+	background-color: white;
+	border-radius: 10px;
+	font-weight: bold;
+	font-size: 20px;
+	padding: 3px;
+	margin: auto;
+}
+
+#download_link:active {
+	border: white inset 3px;
+}
+
+#avatar {
+	border-radius: 20000px;
+}
+
+#img_canvas {
+	border: solid white 3px;
+}
+
+#show-advanced:not(:checked) ~ #advanced-settings {
+	visibility: hidden;
+	position:absolute;
+}
+
+.fixed-width-label {
+	display: inline-block;
+	width: 100px;
+}
+
+input#form-apikey {
+	width: 270px;
+}
+
+#form-width, #form-height {
+	width: 81px;
+}
