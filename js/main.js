@@ -3,7 +3,7 @@ require(["api", "canvasdrawer", "settings"], function(api, canvasDrawer, setting
 
 	function makeRequest() {
 		var messageElem = document.getElementById('message');
-		messageElem.innerText = "Loading...";
+		messageElem.innerHTML = "Loading...";
 		api.load(function() {
 
 			canvasDrawer.draw(api.characters);
