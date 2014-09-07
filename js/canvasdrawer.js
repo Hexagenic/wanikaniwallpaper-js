@@ -22,28 +22,32 @@ define(['settings', 'order'], function(settings, order) {
 			canvasElem.height = settings.height;
 			
 			var margin = settings.margin;
+			console.log(margin);
 			var drawWidth = settings.width - margin.left - margin.right;
 			var drawHeight = settings.height - margin.top - margin.bottom;
 			var aspectRatio = drawHeight / drawWidth;
+
             var w = Math.sqrt(order.data.length / aspectRatio);
-			var h = Math.round(w * aspectRatio);
-			w = Math.round(w);
+			var h = Math.ceil(w * aspectRatio);
+			w = Math.ceil(w);
+			var size = (aspectRatio < 1) ? (drawWidth / w) : (drawHeight / h);
 
 			var ctx = canvasElem.getContext('2d');
 
 			ctx.fillStyle = settings.colors.background;
 			ctx.fillRect(0, 0, settings.width, settings.height);
 
-			var size = drawHeight / h;
+			
 			ctx.font = '' + Math.floor(size) + 'px ' + fonts;
 			
 			var i, x, y, c;
 			for (i = 0; i < order.data.length; i++) {
 				c = order.data[i];
 				ctx.fillStyle = getColor(characters[c]);
-				y = margin.top + size + Math.floor(i / w) * size;
+				y = margin.top + Math.floor(i / w) * size;
 				x = margin.left + (i % w) * size;
-				ctx.fillText(c, x, y);
+				ctx.fillRect(x, y, size, size)
+				//ctx.fillText(c, x, y);
 			}
 
 			var dataURL = canvasElem.toDataURL('image/png');
