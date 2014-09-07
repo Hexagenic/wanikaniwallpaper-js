@@ -43,8 +43,8 @@ define(['settings', 'order'], function(settings, order) {
 			for (i = 0; i < order.data.length; i++) {
 				c = order.data[i];
 				ctx.fillStyle = getColor(characters[c]);
-				y = margin.top + size + Math.floor(i / w) * size;
-				x = margin.left + (i % w) * size;
+				y = Math.floor(margin.top + size + Math.floor(i / w) * size);
+				x = Math.floor(margin.left + (i % w) * size);
 				ctx.fillText(c, x, y);
 			}
 
