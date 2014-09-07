@@ -13,9 +13,9 @@ require(["api", "canvasdrawer", "settings"], function(api, canvasDrawer, setting
 	}
 
 	form.onsubmit = makeRequest;
-	/*
+	
 	if (settings.api_key) {
 		makeRequest();
 	}
-	*/
+	
 });

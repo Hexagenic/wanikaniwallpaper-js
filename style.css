@@ -85,3 +85,9 @@ input#form-apikey {
 #form-width, #form-height {
 	width: 81px;
 }
+
+.footer {
+	width:100%;
+	float:left;
+	text-align: center;
+}
