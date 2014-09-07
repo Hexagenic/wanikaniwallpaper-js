@@ -26,23 +26,32 @@ define(['settings', 'order'], function(settings, order) {
 			var drawHeight = settings.height - margin.top - margin.bottom;
 			var aspectRatio = drawWidth / drawHeight;
 
-            var w = Math.ceil(Math.sqrt(order.data.length * aspectRatio));
-			var h = Math.ceil(w / aspectRatio);
-			var size = (aspectRatio > 1) ? (drawWidth / w) : (drawHeight / h);
+			var h, w, size;
 
-			var ctx = canvasElem.getContext('2d');
+			if (aspectRatio < 1) {
+				var h = Math.sqrt(order.data.length / aspectRatio);
+            	var w = Math.ceil(h * aspectRatio);
+            	h = Math.ceil(h);
+				var size =(drawHeight / h);
+			} else {
+				var h = Math.sqrt(order.data.length / aspectRatio);
+            	var w = Math.ceil(h * aspectRatio);
+            	h = Math.ceil(h);
+				var size = (drawWidth / w);
+			}
 			
+			var ctx = canvasElem.getContext('2d');
+
 			ctx.fillStyle = settings.colors.background;
 			ctx.fillRect(0, 0, settings.width, settings.height);
 			
 			ctx.font = '' + Math.floor(size) + 'px ' + fonts;
-			ctx.textBaseline = "bottom";
 			
 			var i, x, y, c;
 			for (i = 0; i < order.data.length; i++) {
 				c = order.data[i];
 				ctx.fillStyle = getColor(characters[c]);
-				y = Math.floor(margin.top + (size * 1.5) + Math.floor(i / w) * size) - 5;
+				y = Math.floor(margin.top + size + Math.floor(i / w) * size) - 5;
 				x = Math.floor(margin.left + (i % w) * size);
 				ctx.fillText(c, x, y);
 			}
