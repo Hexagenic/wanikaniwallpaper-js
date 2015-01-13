@@ -15,6 +15,24 @@ define(['settings', 'order'], function(settings, order) {
 		return settings.colors[userData.srs];
 	}
 
+	function findBestFit(width, height, elementsToFit) {
+		var sqrt = Math.ceil(Math.sqrt(elementsToFit)) + 1;
+
+		var aspectRatio = width / height;
+
+		var y = Math.ceil(sqrt / ((1 + aspectRatio)/2));
+		var x = Math.ceil(elementsToFit / y);
+
+		var charWidth = width / x;
+		var charHeight = height / y;
+		var fontSize = Math.min(charWidth, charHeight);
+		var totalArea = width * height;
+		var coveredArea = elementsToFit * Math.pow(fontSize, 2);
+		var fit = coveredArea / totalArea;
+
+		return {fit: fit, w: x, h: y, fontSize: fontSize, charWidth: charWidth, charHeight: charHeight};
+	}
+
 	return {
 		draw: function(characters) {
 			var canvasElem = document.createElement('canvas');
@@ -26,34 +44,27 @@ define(['settings', 'order'], function(settings, order) {
 			var drawHeight = settings.height - margin.top - margin.bottom;
 			var aspectRatio = drawWidth / drawHeight;
 
-			var h, w, size;
-
-			if (aspectRatio < 1) {
-				var h = Math.sqrt(order.data.length / aspectRatio);
-            	var w = Math.ceil(h * aspectRatio);
-            	h = Math.ceil(h);
-				var size =(drawHeight / h);
-			} else {
-				var h = Math.sqrt(order.data.length / aspectRatio);
-            	var w = Math.ceil(h * aspectRatio);
-            	h = Math.ceil(h);
-				var size = (drawWidth / w);
-			}
+			var bestFit = findBestFit(drawWidth, drawHeight, order.data.length);
 			
 			var ctx = canvasElem.getContext('2d');
 
 			ctx.fillStyle = settings.colors.background;
 			ctx.fillRect(0, 0, settings.width, settings.height);
 			
-			ctx.font = '' + Math.floor(size) + 'px ' + fonts;
+			ctx.font = '' + Math.floor(bestFit.fontSize) + 'px ' + fonts;
+			ctx.textBaseline = 'top';
+
+			var offset = -Math.floor(bestFit.fontSize) * 0.2;
+			// needed to perfectly align the text.
 			
 			var i, x, y, c;
 			for (i = 0; i < order.data.length; i++) {
 				c = order.data[i];
 				ctx.fillStyle = getColor(characters[c]);
-				y = Math.floor(margin.top + size + Math.floor(i / w) * size) - 5;
-				x = Math.floor(margin.left + (i % w) * size);
-				ctx.fillText(c, x, y);
+
+				y = margin.top + Math.floor(i / bestFit.w) * bestFit.charHeight + offset;
+				x = margin.left + (i % bestFit.w) * bestFit.charWidth;
+				ctx.fillText(c, Math.floor(x), Math.floor(y));
 			}
 
 			var dataURL = canvasElem.toDataURL('image/png');
