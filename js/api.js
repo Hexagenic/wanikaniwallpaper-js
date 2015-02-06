@@ -6,7 +6,14 @@ define(['settings'], function(settings) {
 	return {
 		load: function(onComplete) {
 			var key = settings.api_key;
-			var url = 'https://www.wanikani.com/api/user/' + key + '/kanji?callback=define';
+			if(document.getElementById('radicalsOption').checked)
+			{
+				var url = 'https://www.wanikani.com/api/user/' + key + '/kanji?callback=define';
+			}
+			else
+			{
+				var url = 'https://www.wanikani.com/api/user/' + key + '/radicals?callback=define';
+            }
             
 			require([url], function(data) {
 				if (data.error !== undefined) {
