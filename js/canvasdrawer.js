@@ -1,6 +1,6 @@
 define(['settings', 'order'], function(settings, order) {
 
-	var fonts = '"Hiragino Kaku Gothic Pro","Meiryo","ヒラギノ角ゴ Pro W3","メイリオ","Osaka","MS PGothic","ＭＳ Ｐゴシック",sans-serif';
+	var fonts = '"Meiryo","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","メイリオ","Osaka","MS PGothic","ＭＳ Ｐゴシック",sans-serif';
 
 	function getColor(character) {
 		if (character === undefined) {
