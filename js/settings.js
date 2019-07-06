@@ -44,7 +44,7 @@ define(function() {
 			// cookie in the process.
 			settings_ = value;
 			writeSettings(value);
-			document.cookie = SETTINGS_KEY + '==; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			document.cookie = SETTINGS_KEY + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 			return value;
 		})[0];
 	}
