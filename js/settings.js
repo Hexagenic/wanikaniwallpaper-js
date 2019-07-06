@@ -1,4 +1,6 @@
 define(function() {
+	var SETTINGS_KEY = 'wkw_settings';
+
 	var defaults_ = {
 		api_key: '',
 		width: screen.width,
@@ -21,40 +23,59 @@ define(function() {
 	};
 	var settings_ = {};
 
-    function writeCookie() {
-		var variable = 'wkw_settings=' + window.btoa(JSON.stringify(settings_));
-		var date = new Date();
-        date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-		var expires = 'expires=' + date.toGMTString();
-		document.cookie = variable + ';' + expires;
+	function writeSettings() {
+		localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings_));
 	}
 
-	function readCookie() {
-		document.cookie.split(';').forEach(function(cookie) {
-			var cookieParts = cookie.split('=');
+	// Support reading settings from the old settings store.
+	// This can be dropped a year from merge without user impact.
+	function readSettingsFromCookie() {
+		return document.cookie.split(';').map(function(cookie) {
+			var cookieParts = cookie.split('=').map(function(s) { return s.trim(); });
 			var key = cookieParts[0];
 			var value = cookieParts[1];
-			if (key === 'wkw_settings') {
-				settings_ = JSON.parse(window.atob(value));
-				return;
-			}
-		});
+			return {key: key, value: value};
+		}).filter(function(kvp) {
+			return kvp.key === SETTINGS_KEY;
+		}).map(function(kvp) {
+			var value = JSON.parse(window.atob(kvp.value));
+			// Lazily migrate users with settings stored in cookies
+			// to localStorage immediately upon read and clear the
+			// cookie in the process.
+			settings_ = value;
+			writeSettings(value);
+			document.cookie = SETTINGS_KEY + '==; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			return value;
+		})[0];
+	}
+
+	function readSettingsFromStorage() {
+		var fromStorage = localStorage.getItem(SETTINGS_KEY);
+		if (fromStorage) {
+			var value = JSON.parse(fromStorage);
+			settings_ = value;
+			return value;
+		}
+	}
+
+	function readSettings() {
+		readSettingsFromStorage() || readSettingsFromCookie();
 	}
 
 	function read(property) {
 		if (settings_[property] === undefined) {
 			settings_[property] = defaults_[property];
-			writeCookie();
+			writeSettings();
 		}
 		return settings_[property];
 	}
 
 	function write(property, value) {
 		settings_[property] = value;
-		writeCookie();
+		writeSettings();
 	}
 
-	readCookie();
+	readSettings();
 
 	function connectFormField(fieldName, proprtyName) {
 		var elem = document.getElementById(fieldName);
@@ -69,7 +90,7 @@ define(function() {
 		elem.value = read('margin')[proprtyName];
 		elem.oninput = function() {
 			settings_.margin[proprtyName] = parseInt(elem.value);
-			writeCookie();
+			writeSettings();
 		}
 	}
 
@@ -78,7 +99,7 @@ define(function() {
 		elem.value = read('colors')[proprtyName];
 		elem.oninput = function() {
 			settings_.colors[proprtyName] = elem.value;
-			writeCookie();
+			writeSettings();
 		}
 	}
 
