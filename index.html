@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <head>
+	<meta charset="utf-8"/>
 	<title>Wanikani Wallpaper generator</title>
 	<link rel="stylesheet" type="text/css" href="style.css" />
-
 </head>
 <body>
 	<div id="content" class="clearfix">
@@ -11,7 +11,7 @@
 		<div id="left-column">
 			<form id="api-form">
 				<h2>Settings</h2>
-				<label class="fixed-width-label" for="form-apikey">API Key</label><input type="text" id="form-apikey" placeholder="API Key"><br>
+				<label class="fixed-width-label" for="form-apikey">API v2 Key</label><input type="text" id="form-apikey" placeholder="API v2 Key"><br>
 				<label class="fixed-width-label" for="form-width">Width</label><input type="number" id="form-width" placeholder="width">
 				<label class="fixed-width-label" for="form-height">Height</label><input type="number" id="form-height" placeholder="height"><br>
 				<input type="checkbox" id="show-advanced"> <label for="show-advanced">Show Advanced Settings</label><br>
@@ -44,6 +44,9 @@
 
 		</div>
 		<div class="footer">
+			<p>
+				Wanikani Wallpaper Generator does not need any extra permissions enabled for the API key.
+			</p>
 			<p>
 				Fork on <a href="https://github.com/hexagenic/wanikaniwallpaper-js">Github</a>
 			</p>

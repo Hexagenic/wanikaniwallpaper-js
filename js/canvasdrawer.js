@@ -2,17 +2,28 @@ define(['settings', 'order'], function(settings, order) {
 
 	var fonts = '"Meiryo","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","メイリオ","Osaka","MS PGothic","ＭＳ Ｐゴシック",sans-serif';
 
-	function getColor(character) {
-		if (character === undefined) {
+	function getColor(characterSRSStage) {
+		if (characterSRSStage === undefined) {
 			return settings.colors['unseen'];
 		}
 
-		var userData = character.user_specific;
-		if (userData === null) {
-			return settings.colors['unseen'];
-		}
+		switch(characterSRSStage)
+		{
+			default:
+			case 0: return settings.colors['unseen'];
 
-		return settings.colors[userData.srs];
+			case 1:
+			case 2:
+			case 3:
+			case 4: return settings.colors['apprentice'];
+
+			case 5:
+			case 6: return settings.colors['guru'];
+
+			case 7: return settings.colors['master'];
+			case 8: return settings.colors['enlighten'];
+			case 9: return settings.colors['burned'];
+		}
 	}
 
 	function findBestFit(width, height, elementsToFit) {
